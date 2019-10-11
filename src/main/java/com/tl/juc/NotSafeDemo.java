@@ -23,7 +23,6 @@ public class NotSafeDemo {
         //第三种方法解决多线程并发的问题
         List<String> list = new CopyOnWriteArrayList<>();
 
-
         /*List<String> list = Arrays.asList("a", "b", "c");
         list.forEach(System.out::println);*/
 
@@ -31,12 +30,14 @@ public class NotSafeDemo {
          * java.util.ConcurrentModificationException
          */
 
-        for (int i = 1; i <=10 ; i++) {
+        for (int i = 1; i <=3 ; i++) {
             new Thread(()->{
                 list.add(UUID.randomUUID().toString().substring(0,6));
                 System.out.println(list);
             },String.valueOf(i)).start();
+
         }
+
 
     }
 
