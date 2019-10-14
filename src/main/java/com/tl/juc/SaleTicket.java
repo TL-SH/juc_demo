@@ -1,6 +1,8 @@
 package com.tl.juc;
 
 
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
 
@@ -50,8 +52,24 @@ public class SaleTicket {
                 }
             }
         },"a").start();*/
-        new Thread(()-> {for (int i = 1; i <=40 ; i++) ticket.sale();},"A").start();
+        //ExecutorService executorService = Executors.newFixedThreadPool(3);
+        //ExecutorService executorService = Executors.newSingleThreadExecutor();
+        ExecutorService executorService = Executors.newCachedThreadPool();
+
+        try {
+            for (int i = 1; i < 40 ; i++) {
+                executorService.submit(()->{
+                    ticket.sale();
+                });
+            }
+        }catch (Exception e){
+            e.printStackTrace();
+        }finally {
+            executorService.shutdown();
+        }
+
+        /*new Thread(()-> {for (int i = 1; i <=40 ; i++) ticket.sale();},"A").start();
         new Thread(()-> {for (int i = 1; i <=40 ; i++) ticket.sale();},"B").start();
-        new Thread(()-> {for (int i = 1; i <=40 ; i++) ticket.sale();},"C").start();
+        new Thread(()-> {for (int i = 1; i <=40 ; i++) ticket.sale();},"C").start();*/
     }
 }
